@@ -1,6 +1,7 @@
 const express = require("express");
 const { createClient } = require("redis");
 const { RateLimiter, Unit } = require('redis-sliding-rate-limiter');
+const Hubspot = require('hubspot');
 
 const app = express();
 
@@ -14,7 +15,14 @@ const app = express();
 
 
 app.get("/", async (req, res) => {
+  try {
+
+  
   let n = 0;
+  const hubspot = new Hubspot({
+    apiKey: process.env.HUBSPOT_API_KEY
+  })
+
   const client = createClient({
     url: 'redis://localhost:6379'
   })
@@ -24,10 +32,10 @@ const limiter = new RateLimiter({
   client: client,
   window: {
     unit: Unit.SECOND,
-    size: 10,
+    size: parseInt(process.env.RATE_LIMIT_SECONDS),
     subdivisionUnit: Unit.DECISECOND
   },
-  limit: 100,
+  limit: parseInt(process.env.RATE_LIMIT_REQUESTS),
   limitOverhead: 0
 })
 const key = 'oneRing';
@@ -38,9 +46,13 @@ function sleep (milliseconds){
 
 
 async function calltheAPI(limiterObj){
+  
   const { allowed, remaining, firstExpireAtMs, windowExpireAtMs } = await limiterObj.get(key);
   if(allowed && remaining > 10){
+    
     console.log("Request is allowed so passing through");
+    const contacts = await hubspot.contacts.get({count: 100});
+    console.log(contacts);   
     console.log("Remaining requests " + `${remaining}`);
   } else {
      const dateDiff = new Date(windowExpireAtMs) - new Date();
@@ -56,12 +68,16 @@ async function calltheAPI(limiterObj){
 
 }
   
-  while(n < 500) {
+  while(n < parseInt(process.env.LIMIT)) {
     await calltheAPI(limiter);
     n++;
   }
 
   res.send(" This is an example for successful response");
+}
+catch (error) {
+  res.send(error);
+}
 });
 
 app.listen(3000, async () => {

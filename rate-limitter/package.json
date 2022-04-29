@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.3",
+    "hubspot": "^2.3.14",
     "redis": "^4.0.6",
     "redis-sliding-rate-limiter": "^4.1.0"
   }

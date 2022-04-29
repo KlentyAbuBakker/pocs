@@ -24,7 +24,7 @@ app.get("/", async (req, res) => {
   })
 
   const client = createClient({
-    url: 'redis://localhost:6379'
+    url: 'redis://redis-19220.c256.us-east-1-2.ec2.cloud.redislabs.com:19220'
   })
   await client.connect();
 
@@ -83,7 +83,7 @@ catch (error) {
 app.listen(3000, async () => {
   
     const client = createClient({
-      url: 'redis://localhost:6379'
+      url: 'redis://redis-19220.c256.us-east-1-2.ec2.cloud.redislabs.com:19220'
     })
   
   await client.connect();

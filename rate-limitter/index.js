@@ -24,7 +24,7 @@ app.get("/", async (req, res) => {
   })
 
   const client = createClient({
-    url: process.env.REDIS_AUTH_URL || 'redis://test1:Klenty@123@redis-19220.c256.us-east-1-2.ec2.cloud.redislabs.com:19220'
+    url: process.env.REDIS_AUTH_URL
   })
   await client.connect();
  console.log("Connected to Redis");
@@ -85,7 +85,7 @@ catch (error) {
 app.listen((process.env.PORT || 3000), async () => {
   
     const client = createClient({
-      url: 'redis://redis-19220.c256.us-east-1-2.ec2.cloud.redislabs.com:19220'
+      url: process.env.REDIS_AUTH_URL
     })
   
   await client.connect();

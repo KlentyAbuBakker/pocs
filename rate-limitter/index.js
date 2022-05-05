@@ -53,7 +53,7 @@ async function calltheAPI(limiterObj){
   if(allowed && remaining > 10){
     
     console.log("Request is allowed so passing through");
-    const contacts = await hubspot.contacts.get({count: 100});
+    const contacts = await hubspot.contacts.get({count: (process.env.API_COUNT || 100)});
     console.log(contacts);   
     console.log("Remaining requests " + `${remaining}`);
   } else {

@@ -17,7 +17,7 @@ const app = express();
 app.get("/", async (req, res) => {
   try {
 
-  
+  console.log("Initializing the process");
   let n = 0;
   const hubspot = new Hubspot({
     apiKey: process.env.HUBSPOT_API_KEY
@@ -80,12 +80,12 @@ catch (error) {
 }
 });
 
-app.listen(3000, async () => {
+app.listen((process.env.PORT || 3000), async () => {
   
     const client = createClient({
       url: 'redis://redis-19220.c256.us-east-1-2.ec2.cloud.redislabs.com:19220'
     })
   
   await client.connect();
-  console.log("App is listening to this port")
+  console.log(`App listening in port ${process.env.PORT || 3000}`)
 });

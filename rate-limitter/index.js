@@ -27,7 +27,7 @@ app.get("/", async (req, res) => {
     url: 'redis://redis-19220.c256.us-east-1-2.ec2.cloud.redislabs.com:19220'
   })
   await client.connect();
-
+ console.log("Connected to Redis");
 const limiter = new RateLimiter({
   client: client,
   window: {
@@ -39,6 +39,8 @@ const limiter = new RateLimiter({
   limitOverhead: 0
 })
 const key = 'oneRing';
+
+console.log("Rate limitter configured");
 
 function sleep (milliseconds){
   return new Promise((resolve) => setTimeout(resolve, milliseconds));

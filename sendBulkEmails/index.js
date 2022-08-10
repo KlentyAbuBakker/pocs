@@ -6,7 +6,7 @@ async function sendMail (mailDetails){
     host: "smtp.gmail.com",
     auth: {
       user: "pipedriveauthtest@gmail.com",
-      pass: "ekrjiqokewxbwara"
+      pass: "<SMTP_password>"
     }
   });
 
